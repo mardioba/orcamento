@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Adicionar Orçamento
+{% endblock title %}
+  
+{% block content %}
+  <div class="top-buffer">
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+        {{ form_item.management_form }}
+
+        {% for item in form_item %}
+        <div class="inlineform">
+            <hr />
+            {{ item.as_table }}
+          </div>
+        {% endfor %}
+      </div>
+      <button class="btn btn-primary" type="submit">Salvar</button>
+    </form>
+  </div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+  $(function () {
+    $('.inlineform').formset({
+      prefix: '{{ form_item.prefix }}',
+      addText: '<i class="fa-solid fa-plus"></i> Adicionar',
+      deleteText: '<i class="fa-solid fa-trash"></i> Remover',
+      addCssClass: 'btn btn-primary',
+      deleteCssClass: 'btn btn-danger',
+    })
+  })
+</script>
+{% endblock %}

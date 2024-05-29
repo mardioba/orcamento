@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+  <div class="container">
+    <img src="{% static 'img/logo.png' %}" alt="" height="100px" />
+    <br /> <br />
+  </div>Lauro de Freitas, {{ orcamento.data_orcamento }}
+  <div class="container">
+    Att.: {{ orcamento.responsavel|capfirst }}
+    <p>{{ orcamento.descricao }}</p>
+  </div>
+  <div style="position: absolute; top: 100px; right: 20px  ">
+    <a href="{% url 'orcamento_pdf' orcamento.id %}" class="btn btn-danger"><i class="fa-regular fa-file-pdf" style="font-size: 28px;"></i> <br /><b>Gerar PDF</b></a>
+  </div>
+
+  <table class="table table-bordered border-primary table-sm text-center">
+    <thead>
+      <tr>
+        <th>Serviço</th>
+        <th>Qtd.</th>
+        <th>Valor Unit.</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in itens %}
+        <tr class="{% cycle 'table-info' 'table-light' %}">
+          <td>{{ item.servico }}</td>
+          <td>{{ item.quantidade }}</td>
+          <td>{{ item.valor_unitario|format_currency }}</td>
+          <td>{{ item.calcular_total_item|format_currency }}</td>
+        </tr>
+      {% endfor %}
+      <tr>
+        <td colspan="4" style="padding: 12px;"></td>
+
+      </tr>
+      <tr style="background-color: lightgray;">
+        <td colspan="3">
+          <b>Total</b>
+        </td>
+        <td>
+          <b>{{ total|format_currency }}</b>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+{% endblock %}

@@ -1,0 +1,12 @@
+<!-- orcamento_confirm_delete.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Confirmar Exclusão</h1>
+  <p>Tem certeza de que deseja excluir o orçamento de {{ object.cliente }}?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Confirmar</button>
+    <a href="{% url 'listar_orcamentos' %}" class="btn btn-danger"><i class="fa-solid fa-rotate-left"></i> Cancelar</a>
+  </form>
+{% endblock %}
