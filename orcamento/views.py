@@ -6,10 +6,14 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import DeleteView
 from django.template.loader import render_to_string
 from weasyprint import HTML
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.contrib.auth import logout
 
 def home(request):
     return render(request, 'home.html', {})
 
+@login_required
 def inserir_orcamento(request):
     if request.method == 'GET':
         form = OrcamentoForm()
@@ -37,6 +41,7 @@ def inserir_orcamento(request):
             }
             return render(request, 'criar_orcamento.html', context)
 
+@login_required
 def listar_orcamentos(request):
     orcamentos = Orcamento.objects.all()
     tamanho=len(orcamentos)
@@ -56,6 +61,7 @@ def listar_orcamentos(request):
         }
         return render(request, 'listar_orcamentos.html', context)
 
+@login_required
 def editar_orcamento(request, orcamento_id):
     if request.method == 'GET':
         objeto = Orcamento.objects.filter(id=orcamento_id).first()
@@ -89,6 +95,7 @@ def editar_orcamento(request, orcamento_id):
             }
             return render(request, 'editar_orcamento.html', context)
 
+@login_required
 def orcamento_detail(request, orcamento_id):
     orcamento = get_object_or_404(Orcamento, pk=orcamento_id)
     itens = orcamento.orcamentoitem_set.all()
@@ -98,12 +105,17 @@ def orcamento_detail(request, orcamento_id):
         'itens': itens,
         'total': total
     })
-    
+
 class OrcamentoDeleteView(DeleteView):
     model = Orcamento
     template_name = 'orcamento_confirm_delete.html'
     success_url = reverse_lazy('listar_orcamentos')  # Redirecionar para a lista de orçamentos após a exclusão
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+    
+@login_required
 def orcamento_pdf(request, orcamento_id):
     orcamento = get_object_or_404(Orcamento, pk=orcamento_id)
     itens = orcamento.orcamentoitem_set.all()
@@ -124,3 +136,7 @@ def orcamento_pdf(request, orcamento_id):
     response = HttpResponse(pdf, content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="orcamento_{orcamento_id}.pdf"'
     return response
+
+def sair(request):
+    logout(request)
+    return redirect('login')
