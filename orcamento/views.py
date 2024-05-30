@@ -129,7 +129,7 @@ def orcamento_pdf(request, orcamento_id):
     html_string = render_to_string('orcamento_pdf.html', context)
 
     # Gera o PDF
-    html = HTML(string=html_string, base_url=request.build_absolute_uri())
+    html = HTML(string=html_string, base_url=request.build_absolute_uri('/'))
     pdf = html.write_pdf()
 
     # Retorna o PDF como uma resposta HTTP
