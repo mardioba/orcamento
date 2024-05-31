@@ -30,8 +30,6 @@
       
       .inlineform {
         display: inline;
-        border: 1px solid #dcdcdc;
-        padding: 10px;
       }
     </style>
     {% block css %}
@@ -48,6 +46,7 @@
           <a class="nav-item nav-link" href="{% url 'criar_orcamento' %}">Criar Orçamento</a>
           <a class="nav-item nav-link" href="{% url 'listar_orcamentos' %}">Listar Orçamentos</a>
           <a class="nav-item nav-link" href="{% url 'sair' %}">Sair</a>
+          <a class="nav-item nav-link" href="{% url 'register' %}" tabindex="-1" aria-disabled="true">Register</a>
         </div>
       </div>
     </nav>
