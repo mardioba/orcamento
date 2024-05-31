@@ -11,7 +11,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth import logout
 from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
-
+from django.contrib.auth.models import User
 def home(request):
     return render(request, 'home.html', {})
 
@@ -151,3 +151,8 @@ class UserCreateView(CreateView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
+    
+@login_required
+def user_logins(request):
+    users = User.objects.all().select_related('profile')
+    return render(request, 'user_logins.html', {'users': users})

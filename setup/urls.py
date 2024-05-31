@@ -7,6 +7,7 @@ from orcamento.views import (inserir_orcamento,
                              OrcamentoDeleteView, 
                              orcamento_pdf, 
                              UserCreateView,
+                             user_logins
                              )
 from django.conf import settings
 from django.contrib import admin
@@ -25,4 +26,5 @@ urlpatterns = [
     path('sair/', app_views.sair, name='sair'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('register/', UserCreateView.as_view(), name='register'),
+    path('user-logins/', user_logins, name='user_logins'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

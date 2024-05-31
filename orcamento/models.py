@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class Orcamento(models.Model):
   cliente = models.CharField(max_length=200)
@@ -26,3 +26,10 @@ class OrcamentoItem(models.Model):
 
   def calcular_total_item(self):
       return self.quantidade * self.valor_unitario
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    last_login = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return self.user.username
